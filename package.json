@@ -1,0 +1,26 @@
+{
+  "name": "forgecron",
+  "version": "1.0.0",
+  "description": "A cron-based scheduler extension for ForgeScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["forgescript", "extension", "cron", "scheduler"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@tryforge/forgescript": "^1.0.0",
+    "cron": "^3.1.6"
+  },
+  "devDependencies": {
+    "@types/cron": "^2.4.0",
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@tryforge/forgescript": "^1.0.0"
+  }
+}
