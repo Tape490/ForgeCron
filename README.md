@@ -37,7 +37,7 @@ Returns: The job ID if successful, empty string if failed.
 Example:
 ```js
 // Send a message every day at 9:00 AM
-$cron[dailyGreeting;0 9 * * *;$sendMessage[Good morning!;$channelID]]
+$cron[dailyGreeting;0 9 * * *;$sendMessage[$channelID;Good morning!]]
 ```
 
 ### $deleteCron[jobId]
@@ -50,7 +50,7 @@ Returns: `true` if deleted, `false` otherwise.
 
 Example:
 ```js
-$cron[myJob;0 9 * * *;$sendMessage[Hello!;$channelID]]
+$cron[myJob;0 9 * * *;$sendMessage[$channelID;Hello!]]
 $deleteCron[myJob]
 ```
 
