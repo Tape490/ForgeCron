@@ -1,26 +1,33 @@
-import { ArgType, NativeFunction, Return } from "@tryforge/forgescript"
+import { ArgType, NativeFunction, type Return } from "@tryforge/forgescript"
 
 export default new NativeFunction({
   name: "$deleteCron",
   version: "1.0.0",
   description: "Deletes a scheduled cron job",
   brackets: true,
+  unwrap: true,
+  output: ArgType.Boolean,
   args: [
     {
       name: "job id",
       description: "The ID of the cron job to delete",
       type: ArgType.String,
       required: true,
+      rest: false,
     },
   ],
-  unwrap: true,
-  execute: (ctx, [jobId]) => {
+  async execute(ctx) {
+    const jobID: Return = await this["resolveUnhandledArg"](ctx, 0)
+    if (!this["isValidReturnType"](jobID)) return jobID
+
+    const jobId = (jobID.value as string).trim()
+
     try {
       const cronJobs = (global as any).cronJobs
 
       // Check if the job exists
       if (!cronJobs || !cronJobs.has(jobId)) {
-        return Return.success(false)
+        return this.customError("Cron job does not exist.")
       }
 
       // Stop the job
@@ -30,10 +37,12 @@ export default new NativeFunction({
       // Remove from the map
       cronJobs.delete(jobId)
 
-      return Return.success(true)
+      return this.success(true)
     } catch (error) {
-      console.error("Error deleting cron job:", error)
-      return Return.success(false)
+      return this.customError(`Error deleting cron job: ${error}`)
     }
   },
 })
+
+
+
