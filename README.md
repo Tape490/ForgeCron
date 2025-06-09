@@ -5,7 +5,7 @@ A simple cron-based scheduler extension for [ForgeScript](https://github.com/try
 ## 📦 Installation
 
 ```bash
-npm install forgecron
+npm install github:Tape490/ForgeCron
 ```
 
 ## 🚀 Usage
