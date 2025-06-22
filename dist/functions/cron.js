@@ -33,10 +33,10 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-const structures_1 = require("../structures");
+const forgescript_1 = require("@tryforge/forgescript");
 const cron = __importStar(require("node-cron"));
 const uuid_1 = require("uuid");
-exports.default = new structures_1.NativeFunction({
+exports.default = new forgescript_1.NativeFunction({
     name: "$cron",
     version: "1.0.0",
     description: "Creates a scheduled cron job",
@@ -48,26 +48,26 @@ exports.default = new structures_1.NativeFunction({
             description: "The code to execute when cron triggers",
             rest: false,
             required: true,
-            type: structures_1.ArgType.String,
+            type: forgescript_1.ArgType.String,
         },
         {
             name: "schedule",
             description: "Cron schedule expression (e.g., '0 0 * * *' for daily at midnight)",
             rest: false,
             required: true,
-            type: structures_1.ArgType.String,
+            type: forgescript_1.ArgType.String,
         },
         {
             name: "timezone",
             description: "Timezone for the cron job (optional)",
             rest: false,
-            type: structures_1.ArgType.String,
+            type: forgescript_1.ArgType.String,
         },
         {
             name: "name",
             description: "Custom name for the job (optional)",
             rest: false,
-            type: structures_1.ArgType.String,
+            type: forgescript_1.ArgType.String,
         },
     ],
     async execute(ctx) {
@@ -105,9 +105,11 @@ exports.default = new structures_1.NativeFunction({
             }, options);
             // Initialize crons map if it doesn't exist
             if (!ctx.client.crons) {
+                ;
                 ctx.client.crons = new Map();
             }
             // Store job information
+            ;
             ctx.client.crons.set(jobId, {
                 task: task,
                 schedule: schedule.value,
@@ -119,6 +121,7 @@ exports.default = new structures_1.NativeFunction({
             task.start();
             // Store by name if provided
             if (name.value) {
+                ;
                 ctx.client.crons.set(name.value, ctx.client.crons.get(jobId));
             }
             return this.success(jobId);

@@ -1,4 +1,4 @@
-import { ArgType, type IExtendedCompiledFunctionField, NativeFunction, type Return } from "../structures"
+import { ArgType, type IExtendedCompiledFunctionField, NativeFunction, type Return } from "@tryforge/forgescript"
 import * as cron from "node-cron"
 import { v4 as uuidv4 } from "uuid"
 
@@ -39,14 +39,14 @@ export default new NativeFunction({
   async execute(ctx: any) {
     const code = this.data.fields![0] as IExtendedCompiledFunctionField
 
-    const schedule: Return = await this["resolveUnhandledArg"](ctx, 1)
-    if (!this["isValidReturnType"](schedule)) return schedule
+    const schedule: Return = await (this as any)["resolveUnhandledArg"](ctx, 1)
+    if (!(this as any)["isValidReturnType"](schedule)) return schedule
 
-    const timezone: Return = await this["resolveUnhandledArg"](ctx, 2)
-    if (!this["isValidReturnType"](timezone)) return timezone
+    const timezone: Return = await (this as any)["resolveUnhandledArg"](ctx, 2)
+    if (!(this as any)["isValidReturnType"](timezone)) return timezone
 
-    const name: Return = await this["resolveUnhandledArg"](ctx, 3)
-    if (!this["isValidReturnType"](name)) return name
+    const name: Return = await (this as any)["resolveUnhandledArg"](ctx, 3)
+    if (!(this as any)["isValidReturnType"](name)) return name
 
     try {
       // Validate cron expression
@@ -69,7 +69,7 @@ export default new NativeFunction({
         async () => {
           try {
             // Execute the ForgeScript code
-            await this["resolveCode"](ctx, code)
+            await (this as any)["resolveCode"](ctx, code)
           } catch (error) {
             console.error(`Error executing cron job ${jobId}:`, error)
           }
@@ -78,12 +78,11 @@ export default new NativeFunction({
       )
 
       // Initialize crons map if it doesn't exist
-      if (!ctx.client.crons) {
-        ctx.client.crons = new Map()
+      if (!(ctx.client as any).crons) {
+        ;(ctx.client as any).crons = new Map()
       }
-
       // Store job information
-      ctx.client.crons.set(jobId, {
+      ;(ctx.client as any).crons.set(jobId, {
         task: task,
         schedule: schedule.value as string,
         timezone: (timezone.value as string) || "UTC",
@@ -96,7 +95,7 @@ export default new NativeFunction({
 
       // Store by name if provided
       if (name.value) {
-        ctx.client.crons.set(name.value as string, ctx.client.crons.get(jobId))
+        ;(ctx.client as any).crons.set(name.value as string, (ctx.client as any).crons.get(jobId))
       }
 
       return this.success(jobId)

@@ -1,4 +1,4 @@
-import { ArgType, NativeFunction } from "../structures"
+import { ArgType, NativeFunction } from "@tryforge/forgescript"
 
 export default new NativeFunction({
   name: "$deleteCron",
@@ -19,12 +19,12 @@ export default new NativeFunction({
   execute(ctx: any, [jobId]: [string]) {
     try {
       // Initialize crons map if it doesn't exist
-      if (!ctx.client.crons) {
-        ctx.client.crons = new Map()
+      if (!(ctx.client as any).crons) {
+        ;(ctx.client as any).crons = new Map()
       }
 
       // Check if job exists
-      const jobInfo = ctx.client.crons.get(jobId)
+      const jobInfo = (ctx.client as any).crons.get(jobId)
       if (!jobInfo) {
         return this.success(false)
       }
@@ -34,9 +34,8 @@ export default new NativeFunction({
         jobInfo.task.stop()
         jobInfo.task.destroy()
       }
-
       // Remove from active jobs
-      ctx.client.crons.delete(jobId)
+      ;(ctx.client as any).crons.delete(jobId)
 
       return this.success(true)
     } catch (error) {
