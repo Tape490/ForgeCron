@@ -4,9 +4,6 @@
   "description": "Cron job scheduling extension for ForgeScript",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "prepublishOnly": "npm run build",
     "docgen": "tsc && typedoc src/index.ts && node dist/docgen"
   },
   "keywords": ["forgescript", "cron", "scheduler", "jobs"],
