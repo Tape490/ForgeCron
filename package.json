@@ -6,15 +6,23 @@
   "scripts": {
     "docgen": "tsc && typedoc src/index.ts && node dist/docgen"
   },
-  "keywords": ["forgescript", "cron", "scheduler", "jobs"],
+  "keywords": [
+    "forgescript",
+    "cron",
+    "scheduler",
+    "jobs"
+  ],
   "author": "",
   "license": "ISC",
-  "files": ["dist/**/*"],
+  "files": [
+    "dist/**/*"
+  ],
   "devDependencies": {
     "@tryforge/forgescript": "github:tryforge/ForgeScript#dev",
     "@types/node": "^20.0.0",
-    "@types/uuid": "^9.0.7",
     "@types/node-cron": "^3.0.11",
+    "@types/uuid": "^9.0.7",
+    "typedoc": "^0.28.5",
     "typescript": "^5.8.3"
   },
   "dependencies": {
