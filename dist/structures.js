@@ -20,15 +20,6 @@ var ArgType;
     ArgType["Function"] = "Function";
 })(ArgType || (exports.ArgType = ArgType = {}));
 class NativeFunction {
-    name;
-    version;
-    description;
-    unwrap;
-    brackets;
-    args;
-    output;
-    data;
-    execute;
     constructor(data) {
         this.name = data.name;
         this.version = data.version;
