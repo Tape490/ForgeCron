@@ -82,18 +82,29 @@ exports.default = new forgescript_1.NativeFunction({
         if (!this["isValidReturnType"](name))
             return name;
         try {
-            // Validate cron expression
+            // Validate cron expression first
             if (!cron.validate(schedule.value)) {
                 return this.customError("Invalid cron schedule expression");
+            }
+            // Validate timezone if provided
+            const timezoneValue = timezone.value || "UTC";
+            if (timezoneValue && timezoneValue !== "UTC") {
+                // Basic timezone validation - check if it's a valid timezone
+                try {
+                    new Date().toLocaleString("en-US", { timeZone: timezoneValue });
+                }
+                catch (error) {
+                    return this.customError(`Invalid time zone specified: ${timezoneValue}`);
+                }
             }
             // Generate unique job ID
             const jobId = (0, uuid_1.v4)();
             // Create cron job options
             const options = {
-                scheduled: false,
-                timezone: timezone.value || "UTC",
+                scheduled: false, // Don't start immediately
+                timezone: timezoneValue,
             };
-            // Create the cron job
+            // Create the cron job (but don't start it yet)
             const task = cron.schedule(schedule.value, async () => {
                 try {
                     // Execute the ForgeScript code
@@ -113,18 +124,19 @@ exports.default = new forgescript_1.NativeFunction({
             ctx.client.crons.set(jobId, {
                 task: task,
                 schedule: schedule.value,
-                timezone: timezone.value || "UTC",
+                timezone: timezoneValue,
                 name: name.value || jobId,
                 createdAt: new Date(),
             });
-            // Start the job
+            // Only start the job after everything is set up successfully
             task.start();
-            // Store by name if provided
+            // Store by name if provided (for easy deletion by name)
             if (name.value) {
                 ;
                 ctx.client.crons.set(name.value, ctx.client.crons.get(jobId));
             }
-            return this.success(jobId);
+            // Return success with no output
+            return this.success();
         }
         catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);

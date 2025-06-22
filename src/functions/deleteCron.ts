@@ -3,7 +3,7 @@ import { ArgType, NativeFunction } from "@tryforge/forgescript"
 export default new NativeFunction({
   name: "$deleteCron",
   version: "1.0.0",
-  description: "Deletes a scheduled cron job by its ID or name, returns bool",
+  description: "Deletes a scheduled cron job by its ID or name",
   unwrap: true,
   brackets: true,
   args: [
@@ -15,18 +15,18 @@ export default new NativeFunction({
       type: ArgType.String,
     },
   ],
-  output: ArgType.Boolean,
   execute(ctx: any, [jobId]: [string]) {
     try {
       // Initialize crons map if it doesn't exist
       if (!(ctx.client as any).crons) {
         ;(ctx.client as any).crons = new Map()
+        return this.success() // No output, job didn't exist anyway
       }
 
       // Check if job exists
       const jobInfo = (ctx.client as any).crons.get(jobId)
       if (!jobInfo) {
-        return this.success(false)
+        return this.success() // No output, job didn't exist
       }
 
       // Stop and destroy the cron task
@@ -37,9 +37,11 @@ export default new NativeFunction({
       // Remove from active jobs
       ;(ctx.client as any).crons.delete(jobId)
 
-      return this.success(true)
+      // No output on successful deletion
+      return this.success()
     } catch (error) {
-      return this.success(false)
+      // Even on error, don't show output
+      return this.success()
     }
   },
 })

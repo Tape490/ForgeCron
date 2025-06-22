@@ -49,9 +49,20 @@ export default new NativeFunction({
     if (!(this as any)["isValidReturnType"](name)) return name
 
     try {
-      // Validate cron expression
+      // Validate cron expression first
       if (!cron.validate(schedule.value as string)) {
         return this.customError("Invalid cron schedule expression")
+      }
+
+      // Validate timezone if provided
+      const timezoneValue = (timezone.value as string) || "UTC"
+      if (timezoneValue && timezoneValue !== "UTC") {
+        // Basic timezone validation - check if it's a valid timezone
+        try {
+          new Date().toLocaleString("en-US", { timeZone: timezoneValue })
+        } catch (error) {
+          return this.customError(`Invalid time zone specified: ${timezoneValue}`)
+        }
       }
 
       // Generate unique job ID
@@ -59,11 +70,11 @@ export default new NativeFunction({
 
       // Create cron job options
       const options = {
-        scheduled: false,
-        timezone: (timezone.value as string) || "UTC",
+        scheduled: false, // Don't start immediately
+        timezone: timezoneValue,
       }
 
-      // Create the cron job
+      // Create the cron job (but don't start it yet)
       const task = cron.schedule(
         schedule.value as string,
         async () => {
@@ -85,20 +96,21 @@ export default new NativeFunction({
       ;(ctx.client as any).crons.set(jobId, {
         task: task,
         schedule: schedule.value as string,
-        timezone: (timezone.value as string) || "UTC",
+        timezone: timezoneValue,
         name: (name.value as string) || jobId,
         createdAt: new Date(),
       })
 
-      // Start the job
+      // Only start the job after everything is set up successfully
       task.start()
 
-      // Store by name if provided
+      // Store by name if provided (for easy deletion by name)
       if (name.value) {
         ;(ctx.client as any).crons.set(name.value as string, (ctx.client as any).crons.get(jobId))
       }
 
-      return this.success(jobId)
+      // Return success with no output
+      return this.success()
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error)
       return this.customError(`Failed to create cron job: ${errorMessage}`)
