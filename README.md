@@ -41,7 +41,7 @@ Creates a scheduled cron job that executes ForgeScript code at specified interva
 $cron[$log[Hello World!];* * * * *]
 
 // Run daily at 9 AM EST
-$cron[$channelSendMessage[123456789;Good morning!];0 9 * * *;America/New_York]
+$cron[$sendMessage[123456789;Good morning!];0 9 * * *;America/New_York]
 
 // Run every 5 minutes with custom name
 $cron[$log[Heartbeat];*/5 * * * *;;Heartbeat]
@@ -95,7 +95,7 @@ Common IANA timezone identifiers:
 ```javascript
 // Daily reminder at 8 AM EST
 $cron[
-    $channelSendMessage[123456789;Good morning!];
+    $sendMessage[123456789;Good morning!];
     0 8 * * *;
     America/New_York;
     Daily Reminder
@@ -103,7 +103,7 @@ $cron[
 
 // Weekly maintenance warning (Sundays at 3 AM)
 $cron[
-    $channelSendMessage[123456789;Server maintenance in 30 minutes!];
+    $sendMessage[123456789;Server maintenance in 30 minutes!];
     30 2 * * 0;
     UTC;
     Maintenance
