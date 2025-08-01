@@ -4,7 +4,7 @@
   "description": "Cron job scheduling extension for ForgeScript",
   "main": "dist/index.js",
   "scripts": {
-    "docgen": "tsc && typedoc src/index.ts && node dist/docgen"
+    "docgen": "prettier -w src && tsc && node dist/docgen"
   },
   "keywords": [
     "forgescript",
@@ -12,7 +12,7 @@
     "scheduler",
     "jobs"
   ],
-  "author": "",
+  "author": "Tape490",
   "license": "ISC",
   "files": [
     "dist/**/*"
@@ -22,11 +22,11 @@
     "@types/node": "^20.0.0",
     "@types/node-cron": "^3.0.11",
     "@types/uuid": "^9.0.7",
-    "typedoc": "^0.28.5",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "node-cron": "^4.1.1",
+    "prettier": "^3.6.2",
     "uuid": "^11.1.0"
   },
   "peerDependencies": {

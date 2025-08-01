@@ -17,47 +17,47 @@ export enum ArgType {
 }
 
 export interface IExtendedCompiledFunctionField {
-  name: string
-  code: string
+  name: string;
+  code: string;
 }
 
 export class NativeFunction {
-  name: string
-  version: string
-  description: string
-  unwrap: boolean
-  brackets: boolean
-  args: any[]
-  output?: ArgType
-  data: any
-  execute: Function
+  name: string;
+  version: string;
+  description: string;
+  unwrap: boolean;
+  brackets: boolean;
+  args: any[];
+  output?: ArgType;
+  data: any;
+  execute: Function;
   constructor(data: any) {
-    this.name = data.name
-    this.version = data.version
-    this.description = data.description
-    this.unwrap = data.unwrap ?? false
-    this.brackets = data.brackets ?? false
-    this.args = data.args ?? []
-    this.output = data.output
-    this.data = data
-    this.execute = data.execute
+    this.name = data.name;
+    this.version = data.version;
+    this.description = data.description;
+    this.unwrap = data.unwrap ?? false;
+    this.brackets = data.brackets ?? false;
+    this.args = data.args ?? [];
+    this.output = data.output;
+    this.data = data;
+    this.execute = data.execute;
   }
 
   success(value: any) {
-    return { success: true, value }
+    return { success: true, value };
   }
 
   error(message: string) {
-    return { success: false, error: message }
+    return { success: false, error: message };
   }
 
   customError(message: string) {
-    return this.error(message)
+    return this.error(message);
   }
 }
 
 export type Return = {
-  success: boolean
-  value?: any
-  error?: any
-}
+  success: boolean;
+  value?: any;
+  error?: any;
+};

@@ -20,7 +20,6 @@ exports.default = new forgescript_1.NativeFunction({
         try {
             // Initialize crons map if it doesn't exist
             if (!ctx.client.crons) {
-                ;
                 ctx.client.crons = new Map();
                 return this.success(); // No output, job didn't exist anyway
             }
@@ -35,7 +34,6 @@ exports.default = new forgescript_1.NativeFunction({
                 jobInfo.task.destroy();
             }
             // Remove from active jobs
-            ;
             ctx.client.crons.delete(jobId);
             // No output on successful deletion
             return this.success();

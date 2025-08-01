@@ -1,4 +1,4 @@
-import { ArgType, NativeFunction } from "@tryforge/forgescript"
+import { ArgType, NativeFunction } from "@tryforge/forgescript";
 
 export default new NativeFunction({
   name: "$deleteCron",
@@ -19,29 +19,29 @@ export default new NativeFunction({
     try {
       // Initialize crons map if it doesn't exist
       if (!(ctx.client as any).crons) {
-        ;(ctx.client as any).crons = new Map()
-        return this.success() // No output, job didn't exist anyway
+        (ctx.client as any).crons = new Map();
+        return this.success(); // No output, job didn't exist anyway
       }
 
       // Check if job exists
-      const jobInfo = (ctx.client as any).crons.get(jobId)
+      const jobInfo = (ctx.client as any).crons.get(jobId);
       if (!jobInfo) {
-        return this.success() // No output, job didn't exist
+        return this.success(); // No output, job didn't exist
       }
 
       // Stop and destroy the cron task
       if (jobInfo.task) {
-        jobInfo.task.stop()
-        jobInfo.task.destroy()
+        jobInfo.task.stop();
+        jobInfo.task.destroy();
       }
       // Remove from active jobs
-      ;(ctx.client as any).crons.delete(jobId)
+      (ctx.client as any).crons.delete(jobId);
 
       // No output on successful deletion
-      return this.success()
+      return this.success();
     } catch (error) {
       // Even on error, don't show output
-      return this.success()
+      return this.success();
     }
   },
-})
+});

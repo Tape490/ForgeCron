@@ -116,11 +116,9 @@ exports.default = new forgescript_1.NativeFunction({
             }, options);
             // Initialize crons map if it doesn't exist
             if (!ctx.client.crons) {
-                ;
                 ctx.client.crons = new Map();
             }
             // Store job information
-            ;
             ctx.client.crons.set(jobId, {
                 task: task,
                 schedule: schedule.value,
@@ -132,7 +130,6 @@ exports.default = new forgescript_1.NativeFunction({
             task.start();
             // Store by name if provided (for easy deletion by name)
             if (name.value) {
-                ;
                 ctx.client.crons.set(name.value, ctx.client.crons.get(jobId));
             }
             // Return success with no output
